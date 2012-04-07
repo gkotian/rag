@@ -10,8 +10,7 @@ extern "C" {
 /*=================================================================================================
          GLOBAL VARIABLES
 =================================================================================================*/
-GtkWidget *gpTextView;
-GtkWidget *gpLabel;
+GtkLabel *gpLblOutput;
 GtkWidget *gpBtnCpToCb, *gpMnuCpToCb;
 GtkWidget *gpBtnClr, *gpMnuClr;
 
@@ -19,7 +18,7 @@ GtkWidget *gpBtnClr, *gpMnuClr;
          LOCAL FUNCTION PROTOTYPES
 =================================================================================================*/
 STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder);
-STATUS raGuiShowInTextView(U8 *pStr);
+STATUS raGuiShowInOutputLabel(U8 *pStr);
 
 /*=================================================================================================
          LOCAL FUNCTION DEFINITIONS
@@ -30,17 +29,10 @@ STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder)
 
     do
     {
-        gpTextView = GTK_WIDGET(gtk_builder_get_object(pBuilder, "textviewOutput"));
-        if (gpTextView == NULL)
+        gpLblOutput = GTK_LABEL(GTK_WIDGET(gtk_builder_get_object(pBuilder, "lblOutput")));
+        if (gpLblOutput == NULL)
         {
-            printf("RA_GUI: failed to get 'textviewOutput' widget.\n");
-            break;
-        }
-
-        gpLabel = GTK_WIDGET(gtk_builder_get_object(pBuilder, "label1"));
-        if (gpLabel == NULL)
-        {
-            printf("RA_GUI: failed to get 'label1' widget.\n");
+            printf("RA_GUI: failed to get 'lblOutput' label widget.\n");
             break;
         }
 
@@ -79,36 +71,25 @@ STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder)
     return rc;
 }
 
-STATUS raGuiShowInTextView(U8 *pStr)
+STATUS raGuiShowInOutputLabel(U8 *pStr)
 {
-    STATUS        rc = ERROR;
-    GtkTextBuffer *pTextBuffer;
-    GtkLabel *pLabel;
+    STATUS   rc = ERROR;
 
     do
     {
-        pLabel = GTK_LABEL(gpLabel);
-        gtk_label_set_text(pLabel, pStr);
-        pTextBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(gpTextView));
-        if (pTextBuffer == NULL)
-        {
-            printf("RA_GUI: 'gtk_text_view_get_buffer' failed.\n");
-            break;
-        }
-
-        gtk_text_buffer_set_text(pTextBuffer, pStr, -1);
+        gtk_label_set_text(gpLblOutput, pStr);
 
 /* TODO: need to implement the 'raGuiCopyToClipboard' function. Till then, keep the copy to
  * clipboard button and menu item disabled. */
 #if 0
-        /* Since there is something in the textview, we need to enable the copy to clipboard
+        /* Since there is something in the output label, we need to enable the copy to clipboard
          * button and menu item. */
         gtk_widget_set_sensitive(gpBtnCpToCb, TRUE);
         gtk_widget_set_sensitive(gpMnuCpToCb, TRUE);
 #endif
 
-        /* Since there is something in the textview, we need to enable the clear button and menu
-         * item. */
+        /* Since there is something in the output label, we need to enable the clear button and
+         * menu item. */
         gtk_widget_set_sensitive(gpBtnClr, TRUE);
         gtk_widget_set_sensitive(gpMnuClr, TRUE);
 
@@ -122,28 +103,19 @@ STATUS raGuiShowInTextView(U8 *pStr)
 /*=================================================================================================
          GTK SIGNAL HANDLER FUNCTION DEFINITIONS
 =================================================================================================*/
-G_MODULE_EXPORT void raGuiClearTextView(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void raGuiClearOutputLabel(GtkButton *button, gpointer data)
 {
-    GtkTextBuffer *pTextBuffer;
-
     do
     {
-        pTextBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(gpTextView));
-        if (pTextBuffer == NULL)
-        {
-            printf("RA_GUI: 'gtk_text_view_get_buffer' failed.\n");
-            break;
-        }
+        gtk_label_set_text(gpLblOutput, "");
 
-        gtk_text_buffer_set_text(pTextBuffer, "", -1);
-
-        /* Since there is nothing anymore in the textview, we need to disable the copy to clipboard
-         * button and menu item. */
+        /* Since there is nothing anymore in the output label, we need to disable the copy to
+         * clipboard button and menu item. */
         gtk_widget_set_sensitive(gpBtnCpToCb, FALSE);
         gtk_widget_set_sensitive(gpMnuCpToCb, FALSE);
 
-        /* Since there is nothing anymore in the textview, we need to disable the copy to clipboard
-         * button and menu item. */
+        /* Since there is nothing anymore in the output label, we need to disable the clear button
+         * and menu item. */
         gtk_widget_set_sensitive(gpBtnClr, FALSE);
         gtk_widget_set_sensitive(gpMnuClr, FALSE);
     }
@@ -160,9 +132,9 @@ G_MODULE_EXPORT void raGuiGetRandomMacAddr(GtkButton *button, gpointer data)
         getRandomMacAddress(macAddrBuf, sizeof(macAddrBuf));
         macAddrToStr(macAddrBuf, macAddrStr);
 
-        if (raGuiShowInTextView(macAddrStr) != OK)
+        if (raGuiShowInOutputLabel(macAddrStr) != OK)
         {
-            printf("RA_GUI: 'raGuiShowInTextView' failed.\n");
+            printf("RA_GUI: 'raGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
@@ -179,9 +151,9 @@ G_MODULE_EXPORT void raGuiGetRandomIpv4Addr(GtkButton *button, gpointer data)
         getRandomIpv4Address(ipv4AddrBuf, sizeof(ipv4AddrBuf));
         ipv4AddrToStr(ipv4AddrBuf, ipv4AddrStr);
 
-        if (raGuiShowInTextView(ipv4AddrStr) != OK)
+        if (raGuiShowInOutputLabel(ipv4AddrStr) != OK)
         {
-            printf("RA_GUI: 'raGuiShowInTextView' failed.\n");
+            printf("RA_GUI: 'raGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
@@ -198,9 +170,9 @@ G_MODULE_EXPORT void raGuiGetRandomIpv6Addr(GtkButton *button, gpointer data)
         getRandomIpv6Address(ipv6AddrBuf, sizeof(ipv6AddrBuf));
         ipv6AddrToStr(ipv6AddrBuf, ipv6AddrStr);
 
-        if (raGuiShowInTextView(ipv6AddrStr) != OK)
+        if (raGuiShowInOutputLabel(ipv6AddrStr) != OK)
         {
-            printf("RA_GUI: 'raGuiShowInTextView' failed.\n");
+            printf("RA_GUI: 'raGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
@@ -245,10 +217,10 @@ STATUS raLaunchGui(void)
             printf("'raGui.glade' not found, this file is needed to display the GUI.\n");
             break;
         }
-     
+
         /* Init GTK+. */
         gtk_init(&dummy1, &dummy2);
-     
+
         /* Create a new GtkBuilder object. */
         pBuilder = gtk_builder_new();
 
@@ -259,7 +231,7 @@ STATUS raLaunchGui(void)
             g_free(pError);
             break;
         }
-     
+
         /* Get the main window pointer. */
         pWindow = GTK_WIDGET(gtk_builder_get_object(pBuilder, "windowRaMain"));
         if (pWindow == NULL)
@@ -267,7 +239,7 @@ STATUS raLaunchGui(void)
             printf("RA_GUI: failed to get 'windowRaMain' widget.\n");
             break;
         }
-     
+
         /* Connect signals. */
         gtk_builder_connect_signals(pBuilder, NULL);
 
@@ -280,17 +252,17 @@ STATUS raLaunchGui(void)
 
         /* Destroy the builder object, since we don't need it anymore. */
         g_object_unref(G_OBJECT(pBuilder));
-     
+
         /* Show the main window. All other widgets are automatically shown. */
         gtk_widget_show(pWindow);
-     
+
         /* Start the main GTK loop. */
         gtk_main();
 
         rc = OK;
     }
     while(0);
- 
+
     return rc;
 }
 

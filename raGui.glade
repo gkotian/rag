@@ -78,7 +78,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="image">image1</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="raGuiClearTextView" swapped="no"/>
+                        <signal name="activate" handler="raGuiClearOutputLabel" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -180,13 +180,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkTextView" id="textviewOutput">
+              <object class="GtkLabel" id="lblOutput">
                 <property name="height_request">75</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="editable">False</property>
-                <property name="justification">center</property>
-                <property name="cursor_visible">False</property>
+                <property name="can_focus">False</property>
+                <property name="selectable">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -195,7 +193,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hboxTextViewCtrlBtns">
+              <object class="GtkHBox" id="hboxLblCtrlBtns">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
@@ -207,7 +205,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
-                    <signal name="clicked" handler="raGuiClearTextView" swapped="no"/>
+                    <signal name="clicked" handler="raGuiClearOutputLabel" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -236,19 +234,6 @@
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">label</property>
-                <property name="selectable">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">3</property>
               </packing>
             </child>
           </object>
