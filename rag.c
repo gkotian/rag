@@ -1,4 +1,4 @@
-#include "ra.h"
+#include "rag.h"
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -200,9 +200,9 @@ int main(int argc, char **argv)
 {
     do
     {
-        if (raLaunchGui() != OK)
+        if (ragLaunchGui() != OK)
         {
-            printf("RA: failed to launch GUI\n");
+            printf("RAG: failed to launch GUI\n");
             break;
         }
     }

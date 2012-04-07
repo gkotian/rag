@@ -1,4 +1,4 @@
-#include "ra.h"
+#include "rag.h"
 #include <gtk/gtk.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -17,13 +17,13 @@ GtkWidget *gpBtnClr, *gpMnuClr;
 /*=================================================================================================
          LOCAL FUNCTION PROTOTYPES
 =================================================================================================*/
-STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder);
-STATUS raGuiShowInOutputLabel(U8 *pStr);
+STATUS ragGuiGetAllWidgets(GtkBuilder *pBuilder);
+STATUS ragGuiShowInOutputLabel(U8 *pStr);
 
 /*=================================================================================================
          LOCAL FUNCTION DEFINITIONS
 =================================================================================================*/
-STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder)
+STATUS ragGuiGetAllWidgets(GtkBuilder *pBuilder)
 {
     STATUS rc = ERROR;
 
@@ -32,35 +32,35 @@ STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder)
         gpLblOutput = GTK_LABEL(GTK_WIDGET(gtk_builder_get_object(pBuilder, "lblOutput")));
         if (gpLblOutput == NULL)
         {
-            printf("RA_GUI: failed to get 'lblOutput' label widget.\n");
+            printf("RAG_GUI: failed to get 'lblOutput' label widget.\n");
             break;
         }
 
         gpBtnCpToCb = GTK_WIDGET(gtk_builder_get_object(pBuilder, "btnCopyToClipboard"));
         if (gpBtnCpToCb == NULL)
         {
-            printf("RA_GUI: failed to get 'btnCopyToClipboard' widget.\n");
+            printf("RAG_GUI: failed to get 'btnCopyToClipboard' widget.\n");
             break;
         }
 
         gpMnuCpToCb = GTK_WIDGET(gtk_builder_get_object(pBuilder, "mnuCopyToClipboard"));
         if (gpMnuCpToCb == NULL)
         {
-            printf("RA_GUI: failed to get 'mnuCopyToClipboard' widget.\n");
+            printf("RAG_GUI: failed to get 'mnuCopyToClipboard' widget.\n");
             break;
         }
 
         gpBtnClr = GTK_WIDGET(gtk_builder_get_object(pBuilder, "btnClear"));
         if (gpBtnClr == NULL)
         {
-            printf("RA_GUI: failed to get 'btnClear' widget.\n");
+            printf("RAG_GUI: failed to get 'btnClear' widget.\n");
             break;
         }
 
         gpMnuClr = GTK_WIDGET(gtk_builder_get_object(pBuilder, "mnuClear"));
         if (gpMnuClr == NULL)
         {
-            printf("RA_GUI: failed to get 'mnuClear' widget.\n");
+            printf("RAG_GUI: failed to get 'mnuClear' widget.\n");
             break;
         }
 
@@ -71,15 +71,15 @@ STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder)
     return rc;
 }
 
-STATUS raGuiShowInOutputLabel(U8 *pStr)
+STATUS ragGuiShowInOutputLabel(U8 *pStr)
 {
-    STATUS   rc = ERROR;
+    STATUS rc = ERROR;
 
     do
     {
         gtk_label_set_text(gpLblOutput, pStr);
 
-/* TODO: need to implement the 'raGuiCopyToClipboard' function. Till then, keep the copy to
+/* TODO: need to implement the 'ragGuiCopyToClipboard' function. Till then, keep the copy to
  * clipboard button and menu item disabled. */
 #if 0
         /* Since there is something in the output label, we need to enable the copy to clipboard
@@ -103,7 +103,7 @@ STATUS raGuiShowInOutputLabel(U8 *pStr)
 /*=================================================================================================
          GTK SIGNAL HANDLER FUNCTION DEFINITIONS
 =================================================================================================*/
-G_MODULE_EXPORT void raGuiClearOutputLabel(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void ragGuiClearOutputLabel(GtkButton *button, gpointer data)
 {
     do
     {
@@ -122,7 +122,7 @@ G_MODULE_EXPORT void raGuiClearOutputLabel(GtkButton *button, gpointer data)
     while(0);
 }
 
-G_MODULE_EXPORT void raGuiGetRandomMacAddr(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void ragGuiGetRandomMacAddr(GtkButton *button, gpointer data)
 {
     U8 macAddrBuf[MAC_ADDRBUFLEN] = {0};
     U8 macAddrStr[MAC_ADDRSTRLEN] = {0};
@@ -132,16 +132,16 @@ G_MODULE_EXPORT void raGuiGetRandomMacAddr(GtkButton *button, gpointer data)
         getRandomMacAddress(macAddrBuf, sizeof(macAddrBuf));
         macAddrToStr(macAddrBuf, macAddrStr);
 
-        if (raGuiShowInOutputLabel(macAddrStr) != OK)
+        if (ragGuiShowInOutputLabel(macAddrStr) != OK)
         {
-            printf("RA_GUI: 'raGuiShowInOutputLabel' failed.\n");
+            printf("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
     while(0);
 }
 
-G_MODULE_EXPORT void raGuiGetRandomIpv4Addr(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void ragGuiGetRandomIpv4Addr(GtkButton *button, gpointer data)
 {
     U8 ipv4AddrBuf[INET_ADDRBUFLEN] = {0};
     U8 ipv4AddrStr[INET_ADDRSTRLEN] = {0};
@@ -151,16 +151,16 @@ G_MODULE_EXPORT void raGuiGetRandomIpv4Addr(GtkButton *button, gpointer data)
         getRandomIpv4Address(ipv4AddrBuf, sizeof(ipv4AddrBuf));
         ipv4AddrToStr(ipv4AddrBuf, ipv4AddrStr);
 
-        if (raGuiShowInOutputLabel(ipv4AddrStr) != OK)
+        if (ragGuiShowInOutputLabel(ipv4AddrStr) != OK)
         {
-            printf("RA_GUI: 'raGuiShowInOutputLabel' failed.\n");
+            printf("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
     while(0);
 }
 
-G_MODULE_EXPORT void raGuiGetRandomIpv6Addr(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void ragGuiGetRandomIpv6Addr(GtkButton *button, gpointer data)
 {
     U8 ipv6AddrBuf[INET6_ADDRBUFLEN] = {0};
     U8 ipv6AddrStr[INET6_ADDRSTRLEN] = {0};
@@ -170,16 +170,16 @@ G_MODULE_EXPORT void raGuiGetRandomIpv6Addr(GtkButton *button, gpointer data)
         getRandomIpv6Address(ipv6AddrBuf, sizeof(ipv6AddrBuf));
         ipv6AddrToStr(ipv6AddrBuf, ipv6AddrStr);
 
-        if (raGuiShowInOutputLabel(ipv6AddrStr) != OK)
+        if (ragGuiShowInOutputLabel(ipv6AddrStr) != OK)
         {
-            printf("RA_GUI: 'raGuiShowInOutputLabel' failed.\n");
+            printf("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
     while(0);
 }
 
-G_MODULE_EXPORT void raGuiCopyToClipboard(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void ragGuiCopyToClipboard(GtkButton *button, gpointer data)
 {
     do
     {
@@ -188,7 +188,7 @@ G_MODULE_EXPORT void raGuiCopyToClipboard(GtkButton *button, gpointer data)
     while(0);
 }
 
-G_MODULE_EXPORT void raGuiQuit(GtkButton *button, gpointer data)
+G_MODULE_EXPORT void ragGuiQuit(GtkButton *button, gpointer data)
 {
     do
     {
@@ -200,7 +200,7 @@ G_MODULE_EXPORT void raGuiQuit(GtkButton *button, gpointer data)
 /*=================================================================================================
          GLOBAL FUNCTION DEFINITIONS
 =================================================================================================*/
-STATUS raLaunchGui(void)
+STATUS ragLaunchGui(void)
 {
     STATUS     rc = ERROR;
     GtkBuilder *pBuilder;
@@ -212,9 +212,9 @@ STATUS raLaunchGui(void)
     do
     {
         /* Check if the glade file that defines the GUI exists. */
-        if (access("raGui.glade", R_OK) != 0)
+        if (access("ragGui.glade", R_OK) != 0)
         {
-            printf("'raGui.glade' not found, this file is needed to display the GUI.\n");
+            printf("'ragGui.glade' not found, this file is needed to display the GUI.\n");
             break;
         }
 
@@ -225,7 +225,7 @@ STATUS raLaunchGui(void)
         pBuilder = gtk_builder_new();
 
         /* Load UI from the glade file. */
-        if (!(gtk_builder_add_from_file(pBuilder, "raGui.glade", &pError)))
+        if (!(gtk_builder_add_from_file(pBuilder, "ragGui.glade", &pError)))
         {
             g_warning("%s", pError->message);
             g_free(pError);
@@ -233,10 +233,10 @@ STATUS raLaunchGui(void)
         }
 
         /* Get the main window pointer. */
-        pWindow = GTK_WIDGET(gtk_builder_get_object(pBuilder, "windowRaMain"));
+        pWindow = GTK_WIDGET(gtk_builder_get_object(pBuilder, "windowMain"));
         if (pWindow == NULL)
         {
-            printf("RA_GUI: failed to get 'windowRaMain' widget.\n");
+            printf("RAG_GUI: failed to get 'windowMain' widget.\n");
             break;
         }
 
@@ -244,9 +244,9 @@ STATUS raLaunchGui(void)
         gtk_builder_connect_signals(pBuilder, NULL);
 
         /* Get references to all widgets that we'll need later. */
-        if (raGuiGetAllWidgets(pBuilder) != OK)
+        if (ragGuiGetAllWidgets(pBuilder) != OK)
         {
-            printf("RA_GUI: 'raGuiGetAllWidgets' failed.\n");
+            printf("RAG_GUI: 'ragGuiGetAllWidgets' failed.\n");
             break;
         }
 

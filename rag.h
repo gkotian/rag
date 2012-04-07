@@ -27,7 +27,7 @@ typedef unsigned short  U16;
 typedef unsigned char    U8;
 typedef unsigned char  BOOL;
 
-STATUS raLaunchGui(void);
+STATUS ragLaunchGui(void);
 void getRandomMacAddress(U8 *, U8);
 void getRandomIpv4Address(U8 *, U8);
 void getRandomIpv6Address(U8 *, U8);
