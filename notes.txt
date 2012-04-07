@@ -1,10 +1,7 @@
--> fix IPv4 address bug (why 255 so often)
--> implement "Copy to clipboard"
 -> make "About" dialog
 -> increase font 
 -> different colours for different type of address?
 -> proper validation of IPv4 & IPv6 addresses
--> Double-clicking in the textview should select all text
 -> add function headers
 -> make README file
 

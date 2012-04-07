@@ -79,17 +79,13 @@ STATUS ragGuiShowInOutputLabel(U8 *pStr)
     {
         gtk_label_set_text(gpLblOutput, pStr);
 
-/* TODO: need to implement the 'ragGuiCopyToClipboard' function. Till then, keep the copy to
- * clipboard button and menu item disabled. */
-#if 0
         /* Since there is something in the output label, we need to enable the copy to clipboard
-         * button and menu item. */
+         * button and the corresponding menu item. */
         gtk_widget_set_sensitive(gpBtnCpToCb, TRUE);
         gtk_widget_set_sensitive(gpMnuCpToCb, TRUE);
-#endif
 
         /* Since there is something in the output label, we need to enable the clear button and
-         * menu item. */
+         * the corresponding menu item. */
         gtk_widget_set_sensitive(gpBtnClr, TRUE);
         gtk_widget_set_sensitive(gpMnuClr, TRUE);
 
@@ -181,9 +177,21 @@ G_MODULE_EXPORT void ragGuiGetRandomIpv6Addr(GtkButton *button, gpointer data)
 
 G_MODULE_EXPORT void ragGuiCopyToClipboard(GtkButton *button, gpointer data)
 {
+    GtkClipboard *pClipboard;
+
     do
     {
-        /* TODO */
+        /* Get a reference to the clipboard object. */
+        pClipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+        if (pClipboard == NULL)
+        {
+            printf("RAG_GUI: 'gtk_clipboard_get' failed.\n");
+            break;
+        }
+
+        /* Get the text from the output label and put it into the clipboard. The length can be
+         * passed as '-1' since the text is NULL terminated. */
+        gtk_clipboard_set_text(pClipboard, gtk_label_get_text(gpLblOutput), -1);
     }
     while(0);
 }
