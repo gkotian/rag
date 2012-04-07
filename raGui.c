@@ -11,6 +11,7 @@ extern "C" {
          GLOBAL VARIABLES
 =================================================================================================*/
 GtkWidget *gpTextView;
+GtkWidget *gpLabel;
 GtkWidget *gpBtnCpToCb, *gpMnuCpToCb;
 GtkWidget *gpBtnClr, *gpMnuClr;
 
@@ -33,6 +34,13 @@ STATUS raGuiGetAllWidgets(GtkBuilder *pBuilder)
         if (gpTextView == NULL)
         {
             printf("RA_GUI: failed to get 'textviewOutput' widget.\n");
+            break;
+        }
+
+        gpLabel = GTK_WIDGET(gtk_builder_get_object(pBuilder, "label1"));
+        if (gpLabel == NULL)
+        {
+            printf("RA_GUI: failed to get 'label1' widget.\n");
             break;
         }
 
@@ -75,9 +83,12 @@ STATUS raGuiShowInTextView(U8 *pStr)
 {
     STATUS        rc = ERROR;
     GtkTextBuffer *pTextBuffer;
+    GtkLabel *pLabel;
 
     do
     {
+        pLabel = GTK_LABEL(gpLabel);
+        gtk_label_set_text(pLabel, pStr);
         pTextBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(gpTextView));
         if (pTextBuffer == NULL)
         {
