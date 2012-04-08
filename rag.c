@@ -87,34 +87,34 @@ void getRandomMacAddress(U8 *pMacAddrBuf, U8 bufLen)
 
 void getRandomIpv4Address(U8 *pIpv4AddrBuf, U8 bufLen)
 {
-    U32 ipv4Addr;
+    U32 ipv4AddrVal;
 
     do
     {
         getRandomAddress(ADDR_TYPE_IPV4, pIpv4AddrBuf, bufLen);
-        ipv4Addr = pIpv4AddrBuf[3];
-        ipv4Addr = (ipv4Addr << 8) | pIpv4AddrBuf[2];
-        ipv4Addr = (ipv4Addr << 8) | pIpv4AddrBuf[1];
-        ipv4Addr = (ipv4Addr << 8) | pIpv4AddrBuf[0];
+        ipv4AddrVal = pIpv4AddrBuf[3];
+        ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[2];
+        ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[1];
+        ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[0];
 
 #if 0 /* Check taken from 'IPAddressCheckFunction' */
-        if ((IN_CLASSA(ipv4Addr) &&
-                (ipv4Addr & 0x7f000000) &&
-                ((ipv4Addr & 0x7f000000) != 0x7f000000) &&
-                (ipv4Addr & IN_CLASSA_HOST) &&
-                ((ipv4Addr & IN_CLASSA_HOST) != 0x00ffffff)) ||
-            (IN_CLASSB(ipv4Addr) &&
-                (ipv4Addr & IN_CLASSB_HOST) &&
-                ((ipv4Addr & IN_CLASSB_HOST) != 0x0000ffff)) ||
-            (IN_CLASSC(ipv4Addr) &&
-                (ipv4Addr & IN_CLASSC_HOST) &&
-                ((ipv4Addr & IN_CLASSC_HOST) != 0x000000ff)))
+        if ((IN_CLASSA(ipv4AddrVal) &&
+                (ipv4AddrVal & 0x7f000000) &&
+                ((ipv4AddrVal & 0x7f000000) != 0x7f000000) &&
+                (ipv4AddrVal & IN_CLASSA_HOST) &&
+                ((ipv4AddrVal & IN_CLASSA_HOST) != 0x00ffffff)) ||
+            (IN_CLASSB(ipv4AddrVal) &&
+                (ipv4AddrVal & IN_CLASSB_HOST) &&
+                ((ipv4AddrVal & IN_CLASSB_HOST) != 0x0000ffff)) ||
+            (IN_CLASSC(ipv4AddrVal) &&
+                (ipv4AddrVal & IN_CLASSC_HOST) &&
+                ((ipv4AddrVal & IN_CLASSC_HOST) != 0x000000ff)))
 #else /* Check taken from 'IPPrefixCheckFunction' */
-         if ((IN_CLASSA(ipv4Addr) &&
-                (ipv4Addr & 0x7f000000) &&
-                ((ipv4Addr & 0x7f000000) != 0x7f000000)) ||
-             (IN_CLASSB(ipv4Addr)) ||
-             (IN_CLASSC(ipv4Addr)))
+         if ((IN_CLASSA(ipv4AddrVal) &&
+                (ipv4AddrVal & 0x7f000000) &&
+                ((ipv4AddrVal & 0x7f000000) != 0x7f000000)) ||
+             (IN_CLASSB(ipv4AddrVal)) ||
+             (IN_CLASSC(ipv4AddrVal)))
 #endif
          {
              /* Whew!! Its a valid random IPv4 address. */
@@ -162,45 +162,59 @@ const U8 * macAddrToStr(const U8 *pMacAddrBuf, U8 *pMacAddrStr)
 const U8 * ipv4AddrToStr(const U8 *pIpv4AddrBuf, U8 *pIpv4AddrStr)
 {
     struct sockaddr_in ipv4AddrStruct;
-    U32                ipv4Addr;
+    U32                ipv4AddrVal;
 
-    if ((pIpv4AddrBuf == NULL) || (pIpv4AddrStr == NULL))
+    do
     {
-          return NULL;
+        if ((pIpv4AddrBuf == NULL) || (pIpv4AddrStr == NULL))
+        {
+            pIpv4AddrStr = NULL;
+            break;
+        }
+
+        ipv4AddrVal = pIpv4AddrBuf[3];
+        ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[2];
+        ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[1];
+        ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[0];
+
+        ipv4AddrStruct.sin_addr.s_addr = ipv4AddrVal;
+
+        inet_ntop(AF_INET, &(ipv4AddrStruct.sin_addr), pIpv4AddrStr, INET_ADDRSTRLEN);
     }
+    while(0);
 
-    ipv4Addr = pIpv4AddrBuf[3];
-    ipv4Addr = (ipv4Addr << 8) | pIpv4AddrBuf[2];
-    ipv4Addr = (ipv4Addr << 8) | pIpv4AddrBuf[1];
-    ipv4Addr = (ipv4Addr << 8) | pIpv4AddrBuf[0];
-
-    ipv4AddrStruct.sin_addr.s_addr = ipv4Addr;
-
-    return (inet_ntop(AF_INET, &(ipv4AddrStruct.sin_addr), pIpv4AddrStr, INET_ADDRSTRLEN));
+    return pIpv4AddrStr;
 }
 
 const U8 * ipv6AddrToStr(const U8 *pIpv6AddrBuf, U8 *pIpv6AddrStr)
 {
     struct sockaddr_in6 ipv6AddrStruct;
 
-    if ((pIpv6AddrBuf == NULL) || (pIpv6AddrStr == NULL))
+    do
     {
-        return NULL;
+        if ((pIpv6AddrBuf == NULL) || (pIpv6AddrStr == NULL))
+        {
+            pIpv6AddrStr = NULL;
+            break;
+        }
+
+        memcpy(ipv6AddrStruct.sin6_addr.s6_addr, pIpv6AddrBuf, sizeof(ipv6AddrStruct.sin6_addr.s6_addr));
+
+        inet_ntop(AF_INET6, &(ipv6AddrStruct.sin6_addr), pIpv6AddrStr, INET6_ADDRSTRLEN);
     }
+    while(0);
 
-    memcpy(ipv6AddrStruct.sin6_addr.s6_addr, pIpv6AddrBuf, sizeof(ipv6AddrStruct.sin6_addr.s6_addr));
-
-    return (inet_ntop(AF_INET6, &(ipv6AddrStruct.sin6_addr), pIpv6AddrStr, INET6_ADDRSTRLEN));
+    return pIpv6AddrStr;
 }
 
 /*=================================================================================================
          MAIN FUNCTION
 =================================================================================================*/
-int main(int argc, char **argv)
+int main(int argc, char **pArgv)
 {
     do
     {
-        if (ragLaunchGui() != OK)
+        if (ragLaunchGui(&argc, pArgv) != OK)
         {
             printf("RAG: failed to launch GUI\n");
             break;

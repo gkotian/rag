@@ -1,5 +1,8 @@
 #pragma once
 
+/* Builder XML file that defines the GUI. */
+#define BUILDER_XML_FILE         "ragGui.glade"
+
 #define FALSE                    0
 #define TRUE                     1
 #define NULL           ((void *)0)
@@ -27,7 +30,7 @@ typedef unsigned short  U16;
 typedef unsigned char    U8;
 typedef unsigned char  BOOL;
 
-STATUS ragLaunchGui(void);
+STATUS ragLaunchGui(int *pArgc, char **pArgv);
 void getRandomMacAddress(U8 *, U8);
 void getRandomIpv4Address(U8 *, U8);
 void getRandomIpv6Address(U8 *, U8);

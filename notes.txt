@@ -1,7 +1,6 @@
--> make "About" dialog
--> increase font 
--> different colours for different type of address?
+-> increase font, different colours for different type of address (refer gtk_label_set_markup)
 -> proper validation of IPv4 & IPv6 addresses
 -> add function headers
 -> make README file
+-> display status in the status bar
 
