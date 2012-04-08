@@ -1,11 +1,40 @@
+/*
+Copyright (c) 2012 Gautam Kotian
+
+This file is part of "Random Address Generator".
+
+"Random Address Generator" is free software: you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software Foundation, either
+version 3 of the License, or (at your option) any later version.
+
+"Random Address Generator" is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with "Random Address
+Generator". If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*=================================================================================================
+         HEADER FILES
+=================================================================================================*/
 #include "rag.h"
 #include <gtk/gtk.h>
 #include <netinet/in.h>
 #include <unistd.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define RAG_LICENSE_TEXT "\"Random Address Generator\" is free software: you can redistribute it \
+and/or modify it under the terms of the GNU General Public License as published by the Free \
+Software Foundation, either version 3 of the License, or (at your option) any later version.\n\n\
+\"Random Address Generator\" is distributed in the hope that it will be useful, but WITHOUT ANY \
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR \
+PURPOSE.\nSee the GNU General Public License for more details.\n\nYou should have received a copy \
+of the GNU General Public License along with \"Random Address Generator\". If not, see \
+<http://www.gnu.org/licenses/>."
 
 /*=================================================================================================
          STRUCTURES
@@ -229,11 +258,13 @@ G_MODULE_EXPORT void ragGuiAbout(GtkButton *button, RAG_WIDGETS_T *pWidgets)
         "Gautam Kotian <gautam.kotian@gmail.com>",
         NULL
     };
-    static const gchar copyright[] = "Copyright \xc2\xa9 2012 Gautam Kotian";
     static const gchar comments[] = "Generates random MAC, IPv4 & IPv6 addresses";
-    static const gchar version[] = "(ver 0.1)";
-    static const gchar website[] = "http://GoogieGoesGlobal.com";
+    static const gchar copyright[] = "Copyright \xc2\xa9 2012 Gautam Kotian";
+    static const gchar license[] = RAG_LICENSE_TEXT;
+    static const gchar logo_icon_name[] = GTK_STOCK_PROPERTIES;
     static const gchar program_name[] = "Random Address Generator";
+    static const gchar version[] = "(ver 0.1)";
+    static const gchar website[] = "";
 
     do
     {
@@ -241,10 +272,12 @@ G_MODULE_EXPORT void ragGuiAbout(GtkButton *button, RAG_WIDGETS_T *pWidgets)
                               "authors", authors,
                               "comments", comments,
                               "copyright", copyright,
+                              "license", license,
+                              "logo-icon-name", logo_icon_name,
+                              "program-name", program_name,
                               "version", version,
                               "website", website,
-                              "program-name", program_name,
-                              "logo-icon-name", GTK_STOCK_PROPERTIES,
+                              "wrap-license", TRUE,
                               NULL); 
     }
     while(0);
