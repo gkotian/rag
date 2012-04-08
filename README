@@ -1,3 +1,25 @@
+About:
+------
+The Random Address Generator can be used to generate random MAC, IPv4 & IPv6 addresses.
+
+Compiling:
+----------
+make clean
+make
+
+This should produce an executable file called 'rag'.
+Either double-click this file, or run it from the command line.
+
+Enhancements needed:
+--------------------
+    -> Increase font, different colours for different type of address (refer gtk_label_set_markup)
+    -> Proper validation of IPv4 & IPv6 addresses
+    -> Add function headers
+    -> Display status in the status bar
+    -> Move to cmake
+
 Contact:
 --------
+To report bugs or to send feedback, please email:
+    gautam (dot) kotian (at) gmail (.com)
 
