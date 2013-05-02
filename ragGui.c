@@ -69,14 +69,14 @@ STATUS ragGuiGetAllWidgets(GtkBuilder *pBuilder, RAG_WIDGETS_T *pWidgets)
         pWidgets->pWindow = GTK_WIDGET(gtk_builder_get_object(pBuilder, "windowMain"));
         if (pWidgets->pWindow == NULL)
         {
-            printf("RAG_GUI: failed to get 'windowMain' widget.\n");
+            RAG_LOG("RAG_GUI: failed to get 'windowMain' widget.\n");
             break;
         }
 
         pWidgets->pLblOutput = GTK_LABEL(GTK_WIDGET(gtk_builder_get_object(pBuilder, "lblOutput")));
         if (pWidgets->pLblOutput == NULL)
         {
-            printf("RAG_GUI: failed to get 'lblOutput' label widget.\n");
+            RAG_LOG("RAG_GUI: failed to get 'lblOutput' label widget.\n");
             break;
         }
 
@@ -84,7 +84,7 @@ STATUS ragGuiGetAllWidgets(GtkBuilder *pBuilder, RAG_WIDGETS_T *pWidgets)
                                                                          "btnCopyToClipboard"));
         if (pWidgets->pBtnCopyToClipboard == NULL)
         {
-            printf("RAG_GUI: failed to get 'btnCopyToClipboard' widget.\n");
+            RAG_LOG("RAG_GUI: failed to get 'btnCopyToClipboard' widget.\n");
             break;
         }
 
@@ -92,21 +92,21 @@ STATUS ragGuiGetAllWidgets(GtkBuilder *pBuilder, RAG_WIDGETS_T *pWidgets)
                                                                          "mnuCopyToClipboard"));
         if (pWidgets->pMnuCopyToClipboard == NULL)
         {
-            printf("RAG_GUI: failed to get 'mnuCopyToClipboard' widget.\n");
+            RAG_LOG("RAG_GUI: failed to get 'mnuCopyToClipboard' widget.\n");
             break;
         }
 
         pWidgets->pBtnClear = GTK_WIDGET(gtk_builder_get_object(pBuilder, "btnClear"));
         if (pWidgets->pBtnClear == NULL)
         {
-            printf("RAG_GUI: failed to get 'btnClear' widget.\n");
+            RAG_LOG("RAG_GUI: failed to get 'btnClear' widget.\n");
             break;
         }
 
         pWidgets->pMnuClear = GTK_WIDGET(gtk_builder_get_object(pBuilder, "mnuClear"));
         if (pWidgets->pMnuClear == NULL)
         {
-            printf("RAG_GUI: failed to get 'mnuClear' widget.\n");
+            RAG_LOG("RAG_GUI: failed to get 'mnuClear' widget.\n");
             break;
         }
 
@@ -176,7 +176,7 @@ G_MODULE_EXPORT void ragGuiGetRandomMacAddr(GtkButton *button, RAG_WIDGETS_T *pW
 
         if (ragGuiShowInOutputLabel(macAddrStr, pWidgets) != OK)
         {
-            printf("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
+            RAG_LOG("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
@@ -195,7 +195,7 @@ G_MODULE_EXPORT void ragGuiGetRandomIpv4Addr(GtkButton *button, RAG_WIDGETS_T *p
 
         if (ragGuiShowInOutputLabel(ipv4AddrStr, pWidgets) != OK)
         {
-            printf("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
+            RAG_LOG("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
@@ -214,7 +214,7 @@ G_MODULE_EXPORT void ragGuiGetRandomIpv6Addr(GtkButton *button, RAG_WIDGETS_T *p
 
         if (ragGuiShowInOutputLabel(ipv6AddrStr, pWidgets) != OK)
         {
-            printf("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
+            RAG_LOG("RAG_GUI: 'ragGuiShowInOutputLabel' failed.\n");
             break;
         }
     }
@@ -231,7 +231,7 @@ G_MODULE_EXPORT void ragGuiCopyToClipboard(GtkButton *button, RAG_WIDGETS_T *pWi
         pClipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
         if (pClipboard == NULL)
         {
-            printf("RAG_GUI: 'gtk_clipboard_get' failed.\n");
+            RAG_LOG("RAG_GUI: 'gtk_clipboard_get' failed.\n");
             break;
         }
 
@@ -263,7 +263,7 @@ G_MODULE_EXPORT void ragGuiAbout(GtkButton *button, RAG_WIDGETS_T *pWidgets)
     static const gchar license[] = RAG_LICENSE_TEXT;
     static const gchar logo_icon_name[] = GTK_STOCK_PROPERTIES;
     static const gchar program_name[] = "Random Address Generator";
-    static const gchar version[] = "(ver 0.1)";
+    static const gchar version[] = "(v0.1)";
     static const gchar website[] = "";
 
     do
@@ -298,7 +298,7 @@ STATUS ragLaunchGui(int *pArgc, char **pArgv)
         /* Check if the builder XML file that defines the GUI exists. */
         if (access(BUILDER_XML_FILE, R_OK) != 0)
         {
-            printf("'%s' not found, this file is needed to display the GUI.\n", BUILDER_XML_FILE);
+            RAG_LOG("'%s' not found, this file is needed to display the GUI.\n", BUILDER_XML_FILE);
             break;
         }
 
@@ -312,7 +312,7 @@ STATUS ragLaunchGui(int *pArgc, char **pArgv)
         pBuilder = gtk_builder_new();
         if (pBuilder == NULL)
         {
-            printf("RAG_GUI: 'gtk_builder_new' failed.\n");
+            RAG_LOG("RAG_GUI: 'gtk_builder_new' failed.\n");
             break;
         }
 
@@ -327,7 +327,7 @@ STATUS ragLaunchGui(int *pArgc, char **pArgv)
         /* Get references to all widgets that we'll need later. */
         if (ragGuiGetAllWidgets(pBuilder, pWidgets) != OK)
         {
-            printf("RAG_GUI: 'ragGuiGetAllWidgets' failed.\n");
+            RAG_LOG("RAG_GUI: 'ragGuiGetAllWidgets' failed.\n");
             break;
         }
 

@@ -66,7 +66,7 @@ static void getRandomAddress(ADDR_TYPE_T addrType, U8 *pAddrBuf, U8 bufLen)
             read(fp, &pAddrBuf[i], sizeof(pAddrBuf[i]));
             if (pAddrBuf[i] <= 0xF)
             {
-                /* because I couldn't be bothered to figure out how to convert a
+                /* because I couldn't be bothered to convert a
                  * '0' to '00'
                  * '1' to '01'
                  *  ...
@@ -117,7 +117,7 @@ void getRandomIpv4Address(U8 *pIpv4AddrBuf, U8 bufLen)
         ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[1];
         ipv4AddrVal = (ipv4AddrVal << 8) | pIpv4AddrBuf[0];
 
-#if 0 /* Check taken from 'IPAddressCheckFunction' */
+#if 0
         if ((IN_CLASSA(ipv4AddrVal) &&
                 (ipv4AddrVal & 0x7f000000) &&
                 ((ipv4AddrVal & 0x7f000000) != 0x7f000000) &&
@@ -129,7 +129,7 @@ void getRandomIpv4Address(U8 *pIpv4AddrBuf, U8 bufLen)
             (IN_CLASSC(ipv4AddrVal) &&
                 (ipv4AddrVal & IN_CLASSC_HOST) &&
                 ((ipv4AddrVal & IN_CLASSC_HOST) != 0x000000ff)))
-#else /* Check taken from 'IPPrefixCheckFunction' */
+#else
          if ((IN_CLASSA(ipv4AddrVal) &&
                 (ipv4AddrVal & 0x7f000000) &&
                 ((ipv4AddrVal & 0x7f000000) != 0x7f000000)) ||
@@ -208,7 +208,7 @@ const U8 * ipv4AddrToStr(const U8 *pIpv4AddrBuf, U8 *pIpv4AddrStr)
 
 const U8 * ipv6AddrToStr(const U8 *pIpv6AddrBuf, U8 *pIpv6AddrStr)
 {
-    struct sockaddr_in6 ipv6AddrStruct;
+    struct in6_addr ipv6AddrStruct;
 
     do
     {
@@ -218,9 +218,9 @@ const U8 * ipv6AddrToStr(const U8 *pIpv6AddrBuf, U8 *pIpv6AddrStr)
             break;
         }
 
-        memcpy(ipv6AddrStruct.sin6_addr.s6_addr, pIpv6AddrBuf, sizeof(ipv6AddrStruct.sin6_addr.s6_addr));
+        memcpy(ipv6AddrStruct.s6_addr, pIpv6AddrBuf, sizeof(ipv6AddrStruct.s6_addr));
 
-        inet_ntop(AF_INET6, &(ipv6AddrStruct.sin6_addr), pIpv6AddrStr, INET6_ADDRSTRLEN);
+        inet_ntop(AF_INET6, &ipv6AddrStruct, pIpv6AddrStr, INET6_ADDRSTRLEN);
     }
     while(0);
 
@@ -236,7 +236,7 @@ int main(int argc, char **pArgv)
     {
         if (ragLaunchGui(&argc, pArgv) != OK)
         {
-            printf("RAG: failed to launch GUI\n");
+            RAG_LOG("RAG: failed to launch GUI\n");
             break;
         }
     }

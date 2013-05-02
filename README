@@ -4,6 +4,7 @@ The Random Address Generator can be used to generate random MAC, IPv4 & IPv6 add
 
 Compiling:
 ----------
+(you need to have gtk+-2.0 installed)
 make clean
 make
 
@@ -14,6 +15,7 @@ Enhancements needed:
 --------------------
     -> Increase font, different colours for different type of address (refer gtk_label_set_markup)
     -> Proper validation of IPv4 & IPv6 addresses
+    -> Add zero compression logic to IPv6 addresses
     -> Add function headers
     -> Display status in the status bar
     -> Move to cmake

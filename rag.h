@@ -33,6 +33,9 @@ Generator". If not, see <http://www.gnu.org/licenses/>.
 #define INET_ADDRBUFLEN          4 /* AAA.BBB.CCC.DDD ---> D is last, so 4. */
 #define INET6_ADDRBUFLEN        16 /* AABB:CCDD:EEFF:GGHH:IIJJ:KKLL:MMNN:OOPP ---> P is last, so 16. */
 
+/* For now, all logs are just printfs. Need to move to a better logging system. */
+#define RAG_LOG printf
+
 typedef enum
 {
     OK,
@@ -47,7 +50,7 @@ typedef unsigned short  U16;
 typedef unsigned char    U8;
 typedef unsigned char  BOOL;
 
-STATUS ragLaunchGui(int *pArgc, char **pArgv);
+STATUS ragLaunchGui(int *, char **);
 void getRandomMacAddress(U8 *, U8);
 void getRandomIpv4Address(U8 *, U8);
 void getRandomIpv6Address(U8 *, U8);
